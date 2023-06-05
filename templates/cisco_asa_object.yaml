@@ -1,0 +1,22 @@
+---
+- example: object network n-a-m-e
+  getval: 'object (?P<type>\S+) (?P<name>\S+)'
+  result:
+    "{{ name }}":
+      name: "{{ name }}"
+      type: "{{ type }}"
+  shared: true
+
+- example: " subnet 100.64.0.0 255.255.252.0"
+  getval: '\s+subnet (?P<address>\S+) (?P<mask>\S+)'
+  result:
+    "{{ name }}":
+      ip: "{{ address }}"
+      netmask: "{{ mask }}"
+
+- example: " service tcp destination eq 465"
+  getval: '\s+service (?P<transport>\S+) destination eq (?P<port>\S+)'
+  result:
+    "{{ name }}":
+      transport: "{{ transport }}"
+      port: "{{ port }}"

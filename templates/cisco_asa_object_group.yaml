@@ -1,0 +1,37 @@
+- example: "object-group network TEST-NETWORK"
+  getval: 'object-group\s(?P<type>\S+)\s(?P<name>\S+)'
+  result:
+    "{{ name }}":
+      name: "{{ name }}"
+      type: "{{ type }}"
+  shared: True
+
+- example: " network-object host 100.64.0.1"
+  getval: '\snetwork-object\shost\s(?P<host>\S+)'
+  result:
+    "{{ name }}":
+      {host: ["{{ host }}"]}
+
+- example: " network-object 100.64.0.0 255.255.255.0"
+  getval: '\snetwork-object\s(?P<prefix>\S+)\s(?P<mask>\S+)'
+  result:
+    "{{ name }}":
+      {network: [{prefix: "{{ prefix }}", mask: "{{ mask }}"}]}
+
+- example: "service-object tcp destination eq ftp"
+  getval: '\sservice-object\stcp\sdestination\seq\s(?P<port>\S+)'
+  result:
+    "{{ name }}":
+      {tcp: ["{{ port }}"]}
+
+- example: "service-object udp destination eq ftp"
+  getval: '\sservice-object\sudp\sdestination\seq\s(?P<port>\S+)'
+  result:
+    "{{ name }}":
+      {udp: ["{{ port }}"]}
+
+- example: "service-object object NAME"
+  getval: '\s*service-object\sobject\s(?P<object>\S+)'
+  result:
+    "{{ name }}": 
+      {object : ["{{ object }}"] }
