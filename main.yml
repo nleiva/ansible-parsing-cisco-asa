@@ -82,10 +82,10 @@
 
     - name: Save configs parsed with native parser
       ansible.builtin.copy:
-        content: "{{ item.content | ansible.builtin.to_nice_yaml }}"
+        content: "{{ item.content  | ansible.builtin.to_nice_yaml }}"
         dest: "/output/asa_{{ item.name }}.cfg"
       loop:
         - name: object
-          content: "{{ object.values() | list  }}"
+          content: "{{ object.values() | list }}"
         - name: object_group 
           content: "{{ object_group.values() | list  }}"

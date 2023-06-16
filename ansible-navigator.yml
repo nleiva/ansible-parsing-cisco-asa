@@ -16,7 +16,7 @@ ansible-navigator:
     environment-variables:
       pass:
         - USER
-    image: quay.io/nleiva/ee-general-image
+    image: quay.io/nleiva/ee-network-image
     pull:
       policy: missing
     volume-mounts:

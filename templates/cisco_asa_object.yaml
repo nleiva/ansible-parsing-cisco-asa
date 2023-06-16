@@ -14,6 +14,13 @@
       ip: "{{ address }}"
       netmask: "{{ mask }}"
 
+- example: " host 2600::"
+  getval: '\s+host (?P<address>\S+)'
+  result:
+    "{{ name }}":
+      ip: "{{ address }}"
+      netmask: "{{ mask }}"
+
 - example: " service tcp destination eq 465"
   getval: '\s+service (?P<transport>\S+) destination eq (?P<port>\S+)'
   result:
