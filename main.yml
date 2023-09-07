@@ -4,7 +4,11 @@
 
   tasks:
   ## 1 - Network resource modules
-    - block:
+    - name: Parse with Network resource modules
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: cisco.asa.asa
+      block:
         - name: Parse ACLs for provided configuration
           cisco.asa.asa_acls:
             running_config: "{{ lookup('file', config) }}"
@@ -15,13 +19,10 @@
         - name: Parse object groups for provided configuration
           cisco.asa.asa_ogs:
             # Remove descriptions: https://github.com/ansible-collections/cisco.asa/issues/202
-            running_config: "{{ lookup('file', config) | replace('description ','')}}"
+            running_config: "{{ lookup('file', config) | replace('description ', '') }}"
             state: parsed
           ignore_errors: true
           register: asa_ogs
-      vars:
-        ansible_connection: ansible.netcommon.network_cli
-        ansible_network_os: cisco.asa.asa
 
     - name: Save ACLs config
       ansible.builtin.copy:
@@ -40,8 +41,8 @@
         parser:
           name: ansible.netcommon.ntc_templates
           os: cisco_asa
-          command: "show running-config {{ ( item ) | replace('_',' ') }}"
-        set_fact: "{{ item | replace('-','_') }}"
+          command: "show running-config {{ (item) | replace('_', ' ') }}"
+        set_fact: "{{ item | replace('-', '_') }}"
       loop:
         - ipsec
         - crypto_ikev1
@@ -74,18 +75,18 @@
         parser:
           name: ansible.netcommon.native
           os: cisco_asa
-          command: "{{ ( item ) | replace('_',' ') }}"
-        set_fact: "{{ item | replace('-','_') }}"
+          command: "{{ (item) | replace('_', ' ') }}"
+        set_fact: "{{ item | replace('-', '_') }}"
       loop:
         - object
         - object_group
 
     - name: Save configs parsed with native parser
       ansible.builtin.copy:
-        content: "{{ item.content  | ansible.builtin.to_nice_yaml }}"
+        content: "{{ item.content | ansible.builtin.to_nice_yaml }}"
         dest: "/output/asa_{{ item.name }}.cfg"
       loop:
         - name: object
           content: "{{ object.values() | list }}"
         - name: object_group
-          content: "{{ object_group.values() | list  }}"
+          content: "{{ object_group.values() | list }}"
