@@ -1,0 +1,2 @@
+output_dir: "{{ aap_output | default('/output') }}"
+config: "{{ aap_config | default('base.txt') }}"

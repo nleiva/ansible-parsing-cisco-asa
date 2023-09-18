@@ -27,12 +27,12 @@
     - name: Save ACLs config
       ansible.builtin.copy:
         content: "{{ asa_acls.parsed.acls | default('N/A') | ansible.builtin.to_nice_yaml }}"
-        dest: /output/asa_acls.cfg
+        dest: "{{ output_dir }}/asa_acls.cfg"
 
     - name: Save object groups config
       ansible.builtin.copy:
         content: "{{ asa_ogs.parsed | default('N/A') | ansible.builtin.to_nice_yaml }}"
-        dest: /output/asa_object_groups.cfg
+        dest: "{{ output_dir }}/asa_object_groups.cfg"
 
   ## 2 - NTC Templates
     - name: Parse config with ntc_templates
@@ -54,7 +54,7 @@
     - name: Save config parsed with ntc_templates
       ansible.builtin.copy:
         content: "{{ item.content | ansible.builtin.to_nice_yaml }}"
-        dest: "/output/asa_{{ item.name }}.cfg"
+        dest: "{{ output_dir }}/asa_{{ item.name }}.cfg"
       loop:
         - name: ipsec
           content: "{{ ipsec }}"
@@ -84,7 +84,7 @@
     - name: Save configs parsed with native parser
       ansible.builtin.copy:
         content: "{{ item.content | ansible.builtin.to_nice_yaml }}"
-        dest: "/output/asa_{{ item.name }}.cfg"
+        dest: "{{ output_dir }}/asa_{{ item.name }}.cfg"
       loop:
         - name: object
           content: "{{ object.values() | list }}"
